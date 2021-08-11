@@ -14,43 +14,69 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Company {
     /**
-     * 企业id
-     * 用户id
+     *企业id
+     *用户id
      * 企业名称
      * 企业类型
      * 法人代表
      * 法人身份证号码
      * 注册地区
+     * 邮政编码
      * 企业邮箱
      * 传真
-     * 邮政编码
-     * 注册资金（万元）
-     * 营业执照号
+     * 联系电话
      * 组织机构代码
-     * 经营许可证编号
      * 税务登记证代码
+     * 经营许可证编号
+     * 营业执照号
+     * 注册资金（万元）
      * 开户银行
-     * 银行账号
+     * 开户银行账号
+     * 企业财务人员电话
+     * 企业财务人员邮箱
+     * 企业财务人员姓名
+     * 运输方式
+     * 燃煤存放地点、数量、质量
+     * 企业介绍
+     * 法人身份证(图片)
+     * 营业执照(图片)
+     * 组织机构代码证(图片)
+     * 经营许可证(图片)
+     * 税务登记证(图片)
+     * 开户许可证(图片)
      * 添加时间
      */
 
-    private String Cid;
-    private String Uid;
-    private String Cname;
-    private String Ctype;
-    private String Crepresentative;
-    private String CIDcard;
-    private String Carea;
-    private String Ce_mail;
-    private String Cfax;
-    private String PostalCode;
-    private Double Regcapital;
-    private String BusiNo;
-    private String Orgcode;
-    private String BusilicNo;
-    private String Coderegcer;
-    private String Bankofdeposit;
-    private String Bankacount;
-    private String Add_time;
+    private String cid;
+    private String uid;
+    private String cname;
+    private String cType;
+    private String cRepresentative;
+    private String cIdCardNum;
+    private String cArea;
+    private String postalCode;
+    private String ceMail;
+    private String cFax;
+    private String telephone;
+    private String organizationCode;
+    private String taxCode;
+    private String operatingNumber;
+    private String bNumber;
+    private Double regCapital;
+    private String openBank;
+    private String bankAccount;
+    private String financePhone;
+    private String financeMail;
+    private String financeName;
+    private String transport;
+    private String locationCoal;
+    private String companyProfile;
+    private String cIdCard;
+    private String businessLicence;
+    private String orgCertificate;
+    private String operatingLicense;
+    private String taxRegistration;
+    private String openAccount;
+    private Long addTime;
 
 }

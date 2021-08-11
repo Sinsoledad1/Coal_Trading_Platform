@@ -34,19 +34,19 @@ public class GlobalException {
     @ExceptionHandler(value = Exception.class)
     public CommonResult<String> toHandleUnexpectException(Exception e) {
         e.printStackTrace();
-        return new CommonResult<>(500,"Error","出现了预料外的错误请联系管理员！："+ e.getMessage());
+        return new CommonResult<>(50000,"Error","出现了预料外的错误请联系管理员！："+ e.getMessage());
     }
 
     @ExceptionHandler(value = BasicException.class)
     public CommonResult<String> toHandleException(Exception e) {
         e.printStackTrace();
-        return new CommonResult<>(500,"Error",e.getMessage());
+        return new CommonResult<>(50000,"Error",e.getMessage());
     }
 
     @ExceptionHandler(value = MaxUploadSizeExceededException.class)
     public CommonResult<String> uploadException(Exception e) {
         e.printStackTrace();
-        return new CommonResult<>(500,"Error","文件体积过大");
+        return new CommonResult<>(50000,"Error","文件体积过大");
     }
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public CommonResult<String> validException(MethodArgumentNotValidException e){
@@ -56,19 +56,19 @@ public class GlobalException {
             if (!errors.isEmpty()) {
                 // 这里列出了全部错误参数，按正常逻辑，只需要第一条错误即可
                 FieldError fieldError = (FieldError) errors.get(0);
-                return new CommonResult<>(500, "Error", fieldError.getDefaultMessage());
+                return new CommonResult<>(50000, "Error", fieldError.getDefaultMessage());
             }
         }
-        return new CommonResult<>(500, "Error", "参数验证错误");
+        return new CommonResult<>(50000, "Error", "参数验证错误");
     }
 
     @ExceptionHandler(value = AccessDeniedException.class)
     public CommonResult<String> accessDeniedException(){
-        return new CommonResult<>(401, "Error", "请先登录");
+        return new CommonResult<>(40001, "Error", "请先登录");
     }
 
     @ExceptionHandler(value = AuthorizationServiceException.class)
     public CommonResult<String> unAuthorization(){
-        return new CommonResult<>(403, "Error", "权限不足");
+        return new CommonResult<>(400003, "Error", "权限不足");
     }
 }
