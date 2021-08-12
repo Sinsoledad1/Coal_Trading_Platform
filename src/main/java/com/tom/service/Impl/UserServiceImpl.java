@@ -122,6 +122,12 @@ public class UserServiceImpl implements UserService {
         throw new BasicException("用户名或密码有误！");
     }
 
+    /**
+     * 普通用户提交管理员申请
+     * @param adminDTO
+     * @param session
+     * @return
+     */
     @Override
     public Integer Apply(AdminDTO adminDTO, HttpSession session) {
         User user= (User) session.getAttribute("User");
