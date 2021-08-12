@@ -6,9 +6,10 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root #自己数据库的用户名
-    password: 1021329395 #自己数据库的密码
-    url: jdbc:mysql://localhost:3306/coal_trading_platform?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    username:  #自己数据库的用户名
+    password:  #自己数据库的密码
+    url: jdbc:mysql://localhost:3306/coal_trading?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    #coal_trading_platform coal_trading
   servlet:
     multipart:
       max-request-size: 10MB
