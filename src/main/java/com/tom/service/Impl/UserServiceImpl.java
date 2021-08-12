@@ -125,12 +125,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer Apply(AdminDTO adminDTO, HttpSession session) {
         User user= (User) session.getAttribute("User");
-        //判断是否提交部门重复
-        Admin ifAdmin =adminDAO.SearchByUid(user.getUid());
-        if(ifAdmin.getDepartment().equals(adminDTO.getDepartment())){
-            throw new BasicException("同一部门请勿重复申请！");
-        }
-
+        
         Admin admin=new Admin();
         BeanUtils.copyProperties(adminDTO, admin);
 
