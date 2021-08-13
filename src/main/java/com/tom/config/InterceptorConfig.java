@@ -4,6 +4,7 @@ package com.tom.config;
 
 import com.tom.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
  * 拦截器配置类
  */
 @Configuration
+@CrossOrigin
 public class InterceptorConfig extends WebMvcConfigurationSupport {
     private final LoginInterceptor loginInterceptor;
 

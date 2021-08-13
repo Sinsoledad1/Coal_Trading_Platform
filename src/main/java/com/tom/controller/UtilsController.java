@@ -21,6 +21,7 @@ import java.io.IOException;
  * @date 2020/11/30 10:27
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/utils")
 public class UtilsController {
     private final ImageUploadUtil imageUploadUtil;
