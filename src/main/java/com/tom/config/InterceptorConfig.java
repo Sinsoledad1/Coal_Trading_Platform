@@ -1,42 +1,34 @@
 package com.tom.config;
 
 
-
-import com.tom.interceptor.LoginInterceptor;
+import com.tom.interceptor.TokenInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
- * @author Alfalfa99
- * @version 1.0
- * @date 2020/10/22 21:30
+ * @author 苜蓿
+ * @date 2020/9/13
  * 拦截器配置类
  */
-@Configuration
 @CrossOrigin
+@Configuration
 public class InterceptorConfig extends WebMvcConfigurationSupport {
-    private final LoginInterceptor loginInterceptor;
 
+    private final TokenInterceptor tokenInterceptor;
 
-    public InterceptorConfig(LoginInterceptor loginInterceptor) {
-        this.loginInterceptor = loginInterceptor;
-
+    public InterceptorConfig(TokenInterceptor tokenInterceptor) {
+        this.tokenInterceptor = tokenInterceptor;
     }
 
-    /**
-     * 注册拦截器
-     *
-     * @param registry 拦截器
-     */
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        //拦截所有目录，除了通向login的接口
-        registry.addInterceptor(loginInterceptor)
-                .excludePathPatterns("/**/login/**", "/**/verifyCode/**","/**/register/**")
-                .excludePathPatterns("/**/*.html", "/**/*.js", "/**/*.css")
-                .excludePathPatterns("/**/*.jpg","/**/*.png","/**/*,jpeg");
 
+    @Override
+    protected void addInterceptors(InterceptorRegistry registry) {
+        //拦截所有目录，除了通向login和register的接口
+        registry.addInterceptor(tokenInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/**/login/**", "/**/register/**", "/**/verifyCode/**")
+                .excludePathPatterns("/**/*.html", "/**/*.js", "/**/*.css");
     }
 }

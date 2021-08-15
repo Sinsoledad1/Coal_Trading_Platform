@@ -18,11 +18,13 @@ public class LoginVO {
      * 手机号
      * 联系邮箱
      * 身份(0:普通用户,1：企业用户,2:管理员)
+     * sessionId
      * 添加时间
      */
     private String uid;
     private String username;
     private String eMail;
     private Integer role;
+    private String sessionId;
     private Long addTime;
 }

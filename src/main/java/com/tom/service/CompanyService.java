@@ -3,6 +3,7 @@ package com.tom.service;
 import com.tom.entity.dto.CreateDTO;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -16,8 +17,8 @@ public interface CompanyService {
     /**
      * 完善企业信息
      * @param createDTO
-     * @param session
+
      * @return
      */
-    public int Create(CreateDTO createDTO, HttpSession session);
+    Integer Create(CreateDTO createDTO, HttpServletRequest request);
 }

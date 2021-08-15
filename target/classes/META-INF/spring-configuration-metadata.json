@@ -4,6 +4,11 @@
       "name": "image.config",
       "type": "com.tom.utils.ImageUploadUtil",
       "sourceType": "com.tom.utils.ImageUploadUtil"
+    },
+    {
+      "name": "jwt.config",
+      "type": "com.tom.utils.JwtUtil",
+      "sourceType": "com.tom.utils.JwtUtil"
     }
   ],
   "properties": [
@@ -16,6 +21,17 @@
       "name": "image.config.type",
       "type": "java.util.List<java.lang.String>",
       "sourceType": "com.tom.utils.ImageUploadUtil"
+    },
+    {
+      "name": "jwt.config.key",
+      "type": "java.lang.String",
+      "sourceType": "com.tom.utils.JwtUtil"
+    },
+    {
+      "name": "jwt.config.ttl",
+      "type": "java.lang.Long",
+      "sourceType": "com.tom.utils.JwtUtil",
+      "defaultValue": 0
     }
   ],
   "hints": []

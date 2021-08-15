@@ -17,10 +17,10 @@ import javax.validation.Valid;
 @RestController
 @CrossOrigin
 @RequestMapping("/company")
-public class CompanyController {
+public class companyController {
     private final CompanyServiceImpl service;
 
-    public CompanyController(CompanyServiceImpl service) {
+    public companyController(CompanyServiceImpl service) {
         this.service = service;
     }
 
@@ -33,10 +33,8 @@ public class CompanyController {
     @PostMapping("/create")
     public CommonResult<String> Create(@Valid @RequestBody CreateDTO createDTO, HttpServletRequest request){
 
-        System.out.println(createDTO.toString());
 
-        HttpSession session = request.getSession();
-        int result = service.Create(createDTO,session);
+        int result = service.Create(createDTO,request);
 
         if(result > 0){
             return new CommonResult<>(20000,"OK","企业信息完善成功！");

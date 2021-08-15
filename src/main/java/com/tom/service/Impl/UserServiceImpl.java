@@ -7,16 +7,17 @@ import com.tom.entity.dto.LoginDTO;
 import com.tom.entity.dto.RegisterDTO;
 import com.tom.entity.pojo.Admin;
 import com.tom.entity.pojo.User;
-import com.tom.entity.vo.LoginVO;
 import com.tom.exception.BasicException;
 import com.tom.service.UserService;
 import com.tom.utils.DateTimeTransferUtil;
 import com.tom.utils.IdWorker;
+import com.tom.utils.JwtUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,27 +33,24 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final AdminDAO adminDAO;
     private final IdWorker idWorker;
+    private final JwtUtil jwtUtil;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final Pattern p = Pattern.compile("^1(3|5|7|8|4|9)\\d{9}");
-    public UserServiceImpl(UserDao userDao, AdminDAO adminDAO, IdWorker idWorker, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserDao userDao, AdminDAO adminDAO, IdWorker idWorker, JwtUtil jwtUtil, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDao = userDao;
         this.adminDAO = adminDAO;
         this.idWorker = idWorker;
+        this.jwtUtil = jwtUtil;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     /**
      * 用户注册
      * @param registerDTO
-     * @param session
      * @return
      */
     @Override
-    public Integer Register(RegisterDTO registerDTO, HttpSession session) {
-        //        if (!UserDTO.getVerifyCode().toUpperCase().equals(session.getAttribute("verifyCode"))) {
-//            throw new BasicException("验证码错误");
-//        }
-        session.removeAttribute("verifyCode");
+    public Integer Register(RegisterDTO registerDTO) {
 
         if(!registerDTO.getPassword().equals(registerDTO.getConfirmPassword())){
             throw new BasicException("确认密码和密码不相同");
@@ -89,19 +87,15 @@ public class UserServiceImpl implements UserService {
     /**
      * 用户登录
      * @param loginDTO
-     * @param session
+
      * @return
      */
     @Override
-    public LoginVO Login(LoginDTO loginDTO, HttpSession session) {
-        //        if (!ulDTO.getVerifyCode().toUpperCase().equals(session.getAttribute("verifyCode"))) {
-//            throw new BasicException("验证码错误！");
-//        }
-        session.removeAttribute("verifyCode");
+    public String Login(LoginDTO loginDTO) {
+
 //        //调用方法，根据获得的username获取数据库中的user信息
 
         User trueUser = userDao.UserLogin(loginDTO.getUsername());
-        System.out.println(trueUser.toString());
 
         if (trueUser == null){
             //trueUser为空说明无此用户名的用户
@@ -109,15 +103,7 @@ public class UserServiceImpl implements UserService {
         }
         //匹配密码
         if (bCryptPasswordEncoder.matches(loginDTO.getPassword(), trueUser.getPassword())) {
-
-            //存入session
-            session.setAttribute("User", trueUser);
-            LoginVO userShowVO = new LoginVO();
-            //返回用户详细信息（除了密码）
-
-            BeanUtils.copyProperties(trueUser, userShowVO);
-
-            return userShowVO;
+            return jwtUtil.createJWT(trueUser.getUid(),trueUser.getRole());
         }
         throw new BasicException("用户名或密码有误！");
     }
@@ -125,12 +111,11 @@ public class UserServiceImpl implements UserService {
     /**
      * 普通用户提交管理员申请
      * @param adminDTO
-     * @param session
      * @return
      */
     @Override
-    public Integer Apply(AdminDTO adminDTO, HttpSession session) {
-        User user= (User) session.getAttribute("User");
+    public Integer Apply(AdminDTO adminDTO, HttpServletRequest request) {
+
         
         Admin admin=new Admin();
         BeanUtils.copyProperties(adminDTO, admin);
@@ -138,7 +123,7 @@ public class UserServiceImpl implements UserService {
         //设置管理员id
         admin.setAid(idWorker.nextId()+"");
         //设置用户id
-        admin.setUid(user.getUid());
+        admin.setUid((String) request.getAttribute("uid"));
         //设置角色
         admin.setRole(0);
         //设置审核状态

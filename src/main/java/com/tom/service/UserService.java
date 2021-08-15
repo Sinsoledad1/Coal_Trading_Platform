@@ -6,6 +6,7 @@ import com.tom.entity.dto.RegisterDTO;
 import com.tom.entity.vo.LoginVO;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -21,22 +22,21 @@ public interface UserService {
      * @param registerDTO
      * @return
      */
-    Integer Register(RegisterDTO registerDTO, HttpSession session);
+    Integer Register(RegisterDTO registerDTO);
 
     /**
      * 用户登录
      * @param loginDTO
-     * @param session
      * @return
      */
-    LoginVO Login(LoginDTO loginDTO,HttpSession session);
+    String Login(LoginDTO loginDTO);
 
     /**
      * 普通用户提交管理员申请
      * @param adminDTO
-     * @param session
+
      * @return
      */
-    Integer Apply(AdminDTO adminDTO,HttpSession session);
+    Integer Apply(AdminDTO adminDTO, HttpServletRequest request);
 
 }

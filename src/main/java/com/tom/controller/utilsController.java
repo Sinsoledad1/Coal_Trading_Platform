@@ -7,13 +7,14 @@ import com.tom.entity.bean.VerifyCode;
 import com.tom.entity.pojo.User;
 import com.tom.utils.ImageUploadUtil;
 import com.tom.utils.VerifyCodeUtil;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author BeiChen
@@ -23,29 +24,25 @@ import java.io.IOException;
 @RestController
 @CrossOrigin
 @RequestMapping("/utils")
-public class UtilsController {
+public class utilsController {
     private final ImageUploadUtil imageUploadUtil;
+    private final RedisTemplate redisTemplate;
 
 
-
-    public UtilsController(ImageUploadUtil imageUploadUtil) {
+    public utilsController(ImageUploadUtil imageUploadUtil, RedisTemplate redisTemplate) {
         this.imageUploadUtil = imageUploadUtil;
-
+        this.redisTemplate = redisTemplate;
     }
 
     /**
      * 上传图片接口
-     * @param req
+
      * @param image
      * @return
      */
     @PostMapping("/image")
-    public CommonResult<Object> upload(HttpServletRequest req, @RequestParam("image") MultipartFile image) {
-        // FIXME: 2020/10/30 上线之前务必修改此处！
-        User user = (User) req.getAttribute("User");
-        if (user == null){
-            return new CommonResult<>(40001,"用户未登录",null);
-        }
+    public CommonResult<Object> upload( @RequestParam("image") MultipartFile image) {
+
         Image finalImage = imageUploadUtil.uploadImage(image);
         return new CommonResult<>(20000, "图片上传成功", finalImage);
     }
@@ -63,9 +60,8 @@ public class UtilsController {
         //设置长宽
         VerifyCode verifyCode = verifyCodeUtil.generate(80, 28);
         String code = verifyCode.getCode();
-        //将VerifyCode写入session
-        HttpSession session = request.getSession();
-        session.setAttribute("verifyCode", code);
+        //将验证码中的字符写入redis、过期时间为300秒钟
+        redisTemplate.opsForValue().set("vc_" + code, "1", 300, TimeUnit.SECONDS);
         //设置响应头
         response.setHeader("Pragma", "no-cache");
         //设置响应头

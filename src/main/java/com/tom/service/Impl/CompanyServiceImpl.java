@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,11 +40,12 @@ public class CompanyServiceImpl implements CompanyService {
     /**
      * 完善企业信息
      * @param createDTO
-     * @param session
+
      * @return
      */
     @Override
-    public int Create(CreateDTO createDTO, HttpSession session) {
+    public Integer Create(CreateDTO createDTO, HttpServletRequest request) {
+
 
         Matcher m = p.matcher(createDTO.getFinancePhone());
         if (!m.matches()){
@@ -55,7 +57,7 @@ public class CompanyServiceImpl implements CompanyService {
         //设置企业id
        company.setCid(idWorker.nextId()+"");
         //设置用户id
-        User user = (User) session.getAttribute("User");
+        User user = userDao.selectById((String) request.getAttribute("uid"));
         company.setUid(user.getUid());
 
         //设置用户的角色
@@ -63,10 +65,7 @@ public class CompanyServiceImpl implements CompanyService {
         userDao.updateRole(user);
 
         //将原来session中的user去掉，存入新的user
-        System.out.println("修改前==========>"+session.getAttribute("User").toString());
-        session.removeAttribute("User");
-        session.setAttribute("User",user);
-        System.out.println("修改后==========>"+session.getAttribute("User").toString());
+
         //设置添加时间
         company.setAddTime(DateTimeTransferUtil.getNowTimeStamp());
 

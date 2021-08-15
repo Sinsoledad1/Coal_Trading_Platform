@@ -29,4 +29,14 @@ public interface UserDao extends BaseMapper<User> {
      */
     @Update("UPDATE tb_user SET role = #{user.role} WHERE uid = #{user.uid}")
     int updateRole(@Param("user")User user);
+
+    /**
+     * 通过用户id查询用户角色
+     *
+     * @param uid 用户id
+     * @return 用户角色
+     */
+    @Select("SELECT * FROM tb_user WHERE uid = #{uid}")
+    User selectById(@Param("uid") String uid);
+
 }
